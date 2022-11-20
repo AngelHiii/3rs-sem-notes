@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include<string.h>
+typedef struct poly
+{
+    int cf;
+    int px;
+} P;
+
+void accept(P p1[],int n)
+{
+    printf("enter the cf and px\n");
+    for(int i=0;i<n;i++)
+        scanf("%d%d",&p1[i].cf,&p1[i].px);
+}
+
+void display(P p1[],int n)
+{
+    printf("Polynomial with  cf and px\n");
+    for(int i=0;i<n;i++)
+    {
+        if (p1[i].cf >0)
+            printf("+%dX^%d",p1[i].cf,p1[i].px);
+        else
+            printf("%dX^%d",p1[i].cf,p1[i].px);
+    }
+    printf("\n");
+        
+}
+
+// term power matches one of the power in p2
+
+int check_power_exists(P term,P *p2,int m)
+{
+    int j;
+    for(j=0;j<m;j++)
+    {
+        if (term.px==p2[j].px)
+        {
+            return j; // position
+        }
+    }
+    return -1;  // power does not match
+}
+
+
+int main()
+{
+    P p1[10]={{2,2},{3,3}}
+    P p2[10]={{3,3},{4,4}},res[20];
+    //accept(p1,3);
+    int i,j,m=2,n=2,k=0,flag;
+///iteration p1
+for (i=0;i<n;i++)
+    {
+        flag=check_power_exists(p1[i],p2,2);
+        if(flag==-1) /// no match
+        {
+            res[k]=p1[i];  k++;// copying the p1 in to res
+        }
+        else
+        {
+            res[k].px=p1[i].px;
+            res[k].cf=p1[i].cf+p2[flag].cf;
+            p2[flag].cf=-999;
+ k++;
+        }
+    }// terms remaining in p2
+    for(j=0;j<m;j++)
+        if(p2[j].cf!=-999)
+        {
+            res[k]=p2[j];
+            k++;
+        }
+    display(res,k);
+    return 0;
+}
